@@ -13,7 +13,10 @@ jobs:
 
       - name: Set Branch Name
         id: branch_name
-        run: echo "##[set-output name=name;]${{ github.ref }}"
+        run: |
+          ref=${{ github.ref }}
+          branch_name=${ref#refs/heads/}
+          echo "##[set-output name=name;]$branch_name"
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -22,9 +25,9 @@ jobs:
         with:
           payload: |
             {
-              "app_name": ${{ github.repository }},
-              "branch": ${{ steps.branch_name.outputs.name }},
-              "workflow_link": ${{ steps.workflow_link.outputs.link }}
+              "app_name": "${{ github.repository }}",
+              "branch": "${{ steps.branch_name.outputs.name }}",
+              "workflow_link": "${{ steps.workflow_link.outputs.link }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_DEPLOY_IN_PROGRESS }}
