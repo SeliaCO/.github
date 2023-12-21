@@ -18,16 +18,20 @@ jobs:
           branch_name=${ref#refs/heads/}
           echo "##[set-output name=name;]$branch_name"
 
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Send notification - In Progress
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          payload: |
-            {
-              "app_name": "${{ github.repository }}",
-              "branch": "${{ steps.branch_name.outputs.name }}",
-              "workflow_link": "${{ steps.workflow_link.outputs.link }}"
-            }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_DEPLOY_IN_PROGRESS }}
+          APP_NAME: ${{ github.repository }}
+          BRANCH_NAME: ${{ steps.branch_name.outputs.name }}
+          WORKFLOW_LINK: ${{ steps.workflow_link.outputs.link }}
+        run: |
+          payload=$(jq -n \
+            --arg app_name "$APP_NAME" \
+            --arg branch "$BRANCH_NAME" \
+            --arg workflow_link "$WORKFLOW_LINK" \
+            '{
+              "app_name": $app_name,
+              "branch": $branch,
+              "workflow_link": $workflow_link
+            }')
+          curl -X POST -H 'Content-type: application/json' --data "$payload" $SLACK_WEBHOOK_URL
