@@ -27,9 +27,9 @@ jobs:
         with:
           payload: |
             {
-              "app_name": ${{ github.repository }},
-              "branch": ${{ steps.branch_name.outputs.name }},
-              "workflow_link": ${{ steps.workflow_link.outputs.link }}
+              "app_name": "${{ github.repository }}",
+              "branch": "${{ steps.branch_name.outputs.name }}",
+              "workflow_link": "${{ steps.workflow_link.outputs.link }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_DEPLOY_COMPLETED }}
