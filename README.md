@@ -38,9 +38,9 @@ Selia is a private organization, and contributions are limited to authorized tea
 Branches must follow the naming convention:
 <type>/<short-description>
 Examples:
-	•	feature/add-login
-	•	fix/resolve-bug-123
-	•	chore/update-dependencies
+- feature/add-login
+- fix/resolve-bug-123
+- chore/update-dependencies
 
 ### Commit Messages
 
@@ -81,7 +81,9 @@ git push origin <type>/<short-description>
 ## 🧑‍💻 Projects Overview
 
 Active Projects
-- Pending
+- [Cypress](https://github.com/SeliaCO/cypress)
+- [DBT](https://github.com/SeliaCO/dbt-selia)
+- [Vue Users](https://github.com/SeliaCO/vue-users)
 
 Deprecated Projects
 - Pending
