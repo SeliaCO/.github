@@ -1,0 +1,31 @@
+---
+config:
+  theme: neo-dark
+  look: classic
+  layout: elk
+---
+flowchart TD
+    subgraph s1["Inicialización"]
+        A["Cliente abre canal y se une al room"]
+    end
+    subgraph Infraestructura["Infraestructura"]
+        RA["Redis adapter sincroniza instancias"]
+    end
+    subgraph Servidor["Servidor"]
+        B["Usuario envía mensaje"]
+        C["Servidor valida y formatea el mensaje"]
+        D["Servidor emite broadcast al room"]
+        E["Worker encola notificaciones offline"]
+    end
+    subgraph Cliente["Cliente"]
+        F["Cliente recibe mensaje"]
+        G["Añade mensaje incrementalmente"]
+        H["Agrupa y envía marcas de lectura"]
+        I["Agrupa y muestra toast o badge"]
+    end
+    A --> B
+    B --> C
+    C --> D
+    D --> E & F & RA
+    F --> G & I
+    G --> H

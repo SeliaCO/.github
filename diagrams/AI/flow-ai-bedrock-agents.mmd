@@ -1,0 +1,11 @@
+---
+config:
+  theme: redux-dark
+---
+graph TD
+    A[Usuario] --> B[Nest.js]
+    B --> C[Bedrock Agent Orquestador]
+    C --> D1[Agente Matching]
+    C --> D2[Agente Test]
+    C --> D3[Fallback]
+    C --> E[Respuesta compuesta de vuelta a Nest.js]

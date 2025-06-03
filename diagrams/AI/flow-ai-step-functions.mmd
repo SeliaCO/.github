@@ -1,0 +1,15 @@
+---
+config:
+  theme: redux-dark
+---
+flowchart TD
+    User --> API[API Gateway]
+    API --> LambdaEntry[Lambda Inicia Flujo]
+    LambdaEntry --> SFN[AWS Step Functions]
+    SFN --> Step1[Detectar intención]
+    Step1 --> Step2[Llamar agente Matching]
+    Step2 --> Step3[Llamar agente Test]
+    Step3 --> Step4[Fallback si aplica]
+    Step4 --> LambdaFinal[Guardar y responder]
+    LambdaFinal --> DB[(RDS)]
+    LambdaFinal --> User

@@ -1,0 +1,11 @@
+---
+config:
+  layout: dagre
+  theme: redux-dark
+---
+flowchart TD
+    A["Usuario"] --> B["Nest.js Orquestador"]
+    B --> C1["Detectar intención"]
+    C1 --> C2["Llamar modelo Claude con prompt dinámico"]
+    C2 --> C3["Procesar respuesta"]
+    C3 --> C4["Guardar en RDS y devolver respuesta"]
