@@ -2,6 +2,17 @@ name: Send Result Notification
 
 on:
   workflow_call:
+    inputs:
+      result:
+        description: >-
+          Resultado del job de deploy, para que el caller pueda notificar un fallo.
+          El caller lo pasa como `needs.<job>.result` junto con `if: always()`, porque
+          sin `always()` este job se saltea cuando el deploy falla y el fallo nunca se
+          avisa. Opcional: si no se pasa, vale 'success' y el comportamiento es el de
+          siempre (los callers que no lo usan no cambian).
+        type: string
+        required: false
+        default: success
 
 jobs:
   notify_in_progress:
@@ -22,7 +33,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Send notification - Completed
-        if: success()
+        if: ${{ success() && inputs.result == 'success' }}
         uses: slackapi/slack-github-action@v1.23.0
         with:
           payload: |
@@ -35,7 +46,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_DEPLOY_COMPLETED }}
 
       - name: Send notification - Failed
-        if: failure()
+        if: ${{ always() && inputs.result != 'success' }}
         uses: slackapi/slack-github-action@v1.23.0
         with:
           payload: |
