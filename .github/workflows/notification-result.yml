@@ -10,6 +10,11 @@ on:
           sin `always()` este job se saltea cuando el deploy falla y el fallo nunca se
           avisa. Opcional: si no se pasa, vale 'success' y el comportamiento es el de
           siempre (los callers que no lo usan no cambian).
+
+          Valores posibles: success, failure, cancelled, skipped. El aviso de fallo se
+          manda SOLO con 'failure': un deploy `cancelled` es el `concurrency` haciendo
+          su trabajo —llego un push mas nuevo y el anterior se descarta— y avisarlo como
+          fallo entrena a la gente a ignorar el canal.
         type: string
         required: false
         default: success
@@ -46,7 +51,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_DEPLOY_COMPLETED }}
 
       - name: Send notification - Failed
-        if: ${{ always() && inputs.result != 'success' }}
+        if: ${{ always() && inputs.result == 'failure' }}
         uses: slackapi/slack-github-action@v1.23.0
         with:
           payload: |
